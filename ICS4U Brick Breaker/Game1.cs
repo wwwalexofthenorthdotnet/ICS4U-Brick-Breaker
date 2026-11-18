@@ -19,6 +19,11 @@ namespace ICS4U_Brick_Breaker
 
         Rectangle window;
 
+        MouseState mouseState;
+        MouseState prevMouseState;
+        KeyboardState keyboardState;
+        KeyboardState prevKeyboardState;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -35,7 +40,7 @@ namespace ICS4U_Brick_Breaker
             _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
 
             _graphics.ApplyChanges();
 
@@ -67,6 +72,17 @@ namespace ICS4U_Brick_Breaker
                 Exit();
 
             // TODO: Add your update logic here
+
+            prevMouseState = mouseState;
+            mouseState = Mouse.GetState();
+            prevKeyboardState = keyboardState;
+            keyboardState = Keyboard.GetState();
+
+            Vector2 physicalMousePosition = new Vector2(mouseState.X, mouseState.Y);
+            Matrix resolutionMatrix = _resolutionManager.GetTransformationMatrix(GraphicsDevice);
+            Matrix inverseMatrix = Matrix.Invert(resolutionMatrix);
+            Vector2 virtualMousePosition = Vector2.Transform(physicalMousePosition, inverseMatrix);
+
 
             base.Update(gameTime);
         }
