@@ -22,6 +22,13 @@ namespace ICS4U_Brick_Breaker
             _brickTexture = brickTexture;
         }
 
+        public bool Intersects(Rectangle rectangle)
+        {
+            return _brickRect.Intersects(rectangle);
+        }
+
+        public Rectangle Rectangle { get { return _brickRect; } }
+
         public void Draw(SpriteBatch spriteBatch, Color color)
         {
             spriteBatch.Draw(_brickTexture, _brickRect, color);

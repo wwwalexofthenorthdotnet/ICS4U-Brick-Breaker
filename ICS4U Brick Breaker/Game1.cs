@@ -14,6 +14,7 @@ namespace ICS4U_Brick_Breaker
         private ResolutionManager _resolutionManager;
 
         Texture2D brickTexture;
+        Texture2D ballTexture;
 
         List<Brick> bricks;
 
@@ -23,6 +24,8 @@ namespace ICS4U_Brick_Breaker
         MouseState prevMouseState;
         KeyboardState keyboardState;
         KeyboardState prevKeyboardState;
+
+        Ball ball;
 
         public Game1()
         {
@@ -55,6 +58,8 @@ namespace ICS4U_Brick_Breaker
                 for (int x = 0; x < 4; x++)
                     bricks.Add(new Brick(new Rectangle(105 * i + 60, 100 * x + 50, 100, 40), brickTexture));
             }
+
+            ball = new Ball(ballTexture, window);
         }
 
         protected override void LoadContent()
@@ -64,6 +69,8 @@ namespace ICS4U_Brick_Breaker
             // TODO: use this.Content to load your game content here
 
             brickTexture = Content.Load<Texture2D>("images/rectangle");
+
+            ballTexture = Content.Load<Texture2D>("images/circle");
         }
 
         protected override void Update(GameTime gameTime)
@@ -82,6 +89,9 @@ namespace ICS4U_Brick_Breaker
             Matrix resolutionMatrix = _resolutionManager.GetTransformationMatrix(GraphicsDevice);
             Matrix inverseMatrix = Matrix.Invert(resolutionMatrix);
             Vector2 virtualMousePosition = Vector2.Transform(physicalMousePosition, inverseMatrix);
+
+            ball.Update(bricks);
+            //ball.Bounce();
 
 
             base.Update(gameTime);
@@ -103,6 +113,8 @@ namespace ICS4U_Brick_Breaker
             {
                 brick.Draw(_spriteBatch, Color.White);
             }
+
+            ball.Draw(_spriteBatch);
 
             _spriteBatch.End();
 
