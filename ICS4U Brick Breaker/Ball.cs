@@ -19,22 +19,24 @@ namespace ICS4U_Brick_Breaker
 
         private List<Brick> _bricks;
 
+        private Random _generator;
+
 
         public Ball(Texture2D ballTexture, Rectangle window)
         {
             _ballTexture = ballTexture;
 
-
+            _generator = new Random();
             
 
             _ballRect = new Rectangle(window.Width / 2 - 25, 500, 50, 50);
 
             _window = window;
 
-            _speed = new Vector2(0, -1);
+            _speed = new Vector2(_generator.Next(-1, 2), -1);
         }
 
-        public void Update(List<Brick> bricks)
+        public void Update(List<Brick> bricks, Paddle paddle)
         {
             // Horizontal bounce
             bool bounce = false;
@@ -48,6 +50,12 @@ namespace ICS4U_Brick_Breaker
                     bounce = true;
                 }
 
+            }
+
+
+            if (paddle.Intersects(_ballRect) && _speed.Y > 0)
+            {
+                bounce = true;
             }
 
             if (bounce)
@@ -69,6 +77,11 @@ namespace ICS4U_Brick_Breaker
                     bounce = true;
                 }
 
+            }
+
+            if (paddle.Intersects(_ballRect) && _speed.Y > 0)
+            {
+                bounce = true;
             }
 
             if (bounce)

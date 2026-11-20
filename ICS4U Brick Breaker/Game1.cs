@@ -15,6 +15,7 @@ namespace ICS4U_Brick_Breaker
 
         Texture2D brickTexture;
         Texture2D ballTexture;
+        Texture2D paddleTexture;
 
         List<Brick> bricks;
 
@@ -26,6 +27,8 @@ namespace ICS4U_Brick_Breaker
         KeyboardState prevKeyboardState;
 
         Ball ball;
+
+        Paddle paddle;
 
         public Game1()
         {
@@ -42,6 +45,9 @@ namespace ICS4U_Brick_Breaker
 
             _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
+            //_graphics.PreferredBackBufferWidth = 112;
+            //_graphics.PreferredBackBufferHeight = 216;
 
             _graphics.IsFullScreen = true;
 
@@ -60,6 +66,8 @@ namespace ICS4U_Brick_Breaker
             }
 
             ball = new Ball(ballTexture, window);
+
+            paddle = new Paddle(paddleTexture, window);
         }
 
         protected override void LoadContent()
@@ -71,6 +79,9 @@ namespace ICS4U_Brick_Breaker
             brickTexture = Content.Load<Texture2D>("images/rectangle");
 
             ballTexture = Content.Load<Texture2D>("images/circle");
+
+            paddleTexture = Content.Load<Texture2D>("images/paddle");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -90,7 +101,8 @@ namespace ICS4U_Brick_Breaker
             Matrix inverseMatrix = Matrix.Invert(resolutionMatrix);
             Vector2 virtualMousePosition = Vector2.Transform(physicalMousePosition, inverseMatrix);
 
-            ball.Update(bricks);
+            paddle.Update(keyboardState);
+            ball.Update(bricks, paddle);
             //ball.Bounce();
 
 
@@ -107,12 +119,14 @@ namespace ICS4U_Brick_Breaker
 
             _spriteBatch.Begin(transformMatrix: resolutionMatrix, samplerState: SamplerState.PointClamp);
 
-            _spriteBatch.Draw(brickTexture, window, Color.Green);
+            _spriteBatch.Draw(brickTexture, window, Color.Teal);
 
             foreach (Brick brick in bricks)
             {
                 brick.Draw(_spriteBatch, Color.White);
             }
+
+            paddle.Draw(_spriteBatch);
 
             ball.Draw(_spriteBatch);
 
