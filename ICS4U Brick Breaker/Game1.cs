@@ -49,7 +49,7 @@ namespace ICS4U_Brick_Breaker
             //_graphics.PreferredBackBufferWidth = 112;
             //_graphics.PreferredBackBufferHeight = 216;
 
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
 
             _graphics.ApplyChanges();
 

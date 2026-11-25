@@ -24,6 +24,8 @@ namespace ICS4U_Brick_Breaker
             _window = window;
         }
 
+        public Point PaddleCenter { get { return _paddleRect.Center; } }
+
 
 
         public void Update(KeyboardState keyboardState)
@@ -46,6 +48,8 @@ namespace ICS4U_Brick_Breaker
         {
             return _paddleRect.Intersects(rectangle);
         }
+
+        
 
         public void Draw(SpriteBatch spriteBatch)
         {

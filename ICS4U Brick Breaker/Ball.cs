@@ -33,13 +33,14 @@ namespace ICS4U_Brick_Breaker
 
             _window = window;
 
-            _speed = new Vector2(_generator.Next(-1, 2), -1);
+            _speed = new Vector2(0, -1);
         }
 
         public void Update(List<Brick> bricks, Paddle paddle)
         {
             // Horizontal bounce
             bool bounce = false;
+            bool paddleBounce = false;
             _ballRect.X += (int)_speed.X;
             for (int i = 0; i < bricks.Count; i++)
             {
@@ -53,17 +54,40 @@ namespace ICS4U_Brick_Breaker
             }
 
 
-            if (paddle.Intersects(_ballRect) && _speed.Y > 0)
+            if (paddle.Intersects(_ballRect))
             {
-                bounce = true;
+                paddleBounce = true;
             }
 
             if (bounce)
             {
                 _speed.X *= -1;
+                bounce = false;
+
             }
 
-            bounce = false;
+            if (paddleBounce)
+            {
+                int difference =  _ballRect.Center.X - paddle.PaddleCenter.X;
+
+                int baseSpeed = 0;
+
+                //_speed.X = -difference / 15;
+
+                if (difference >= 25)
+                {
+                    _speed.X = 0;
+                }
+                else if (difference <= -25)
+                {
+                    _speed.X = 0;
+                }
+                else
+                    _speed.Y = 100;
+
+                paddleBounce = false;
+            }
+
 
             //Vertical bounce
 
@@ -87,9 +111,9 @@ namespace ICS4U_Brick_Breaker
             if (bounce)
             {
                 _speed.Y *= -1;
-            }
+                bounce = false;
 
-            bounce = false;
+            }
 
             if (_ballRect.Top <= _window.Top || _ballRect.Bottom >= _window.Bottom)
                 _speed.Y *= -1;
