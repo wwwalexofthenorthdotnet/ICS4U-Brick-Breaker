@@ -68,22 +68,18 @@ namespace ICS4U_Brick_Breaker
 
             if (paddleBounce)
             {
-                int difference =  _ballRect.Center.X - paddle.PaddleCenter.X;
+                int offset = MathHelper.Clamp((_ballRect.Center.X - paddle.PaddleCenter.X) / (paddle.Rectangle.X / 2), -1, 1);
 
-                int baseSpeed = 0;
+                float currentSpeedX = _speed.X;
 
-                //_speed.X = -difference / 15;
-
-                if (difference >= 25)
+                if (offset >= 0.5)
                 {
                     _speed.X = 0;
                 }
-                else if (difference <= -25)
+                else if (offset <= -0.5)
                 {
                     _speed.X = 0;
                 }
-                else
-                    _speed.Y = 100;
 
                 paddleBounce = false;
             }

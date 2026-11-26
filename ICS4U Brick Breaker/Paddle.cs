@@ -26,6 +26,8 @@ namespace ICS4U_Brick_Breaker
 
         public Point PaddleCenter { get { return _paddleRect.Center; } }
 
+        public Rectangle Rectangle {  get { return _paddleRect; } }
+
 
 
         public void Update(KeyboardState keyboardState)
